@@ -86,7 +86,7 @@ document.getElementById('celebrityInput').addEventListener('input', handleCelebr
 function updateCelebritySources() {
 const gender = document.getElementById('genderFilter').value;
 const industry = document.getElementById('industryFilter').value;
-renderChips('celebrityChips', getCelebritiesByFilter(gender, industry).slice(0, 8));
+renderChips('celebrityGrid', getCelebritiesByFilter(gender, industry).slice(0, 8));
 handleCelebrityInput();
 }
 
@@ -118,7 +118,8 @@ if (matches.length && query) {
 }
 
 document.addEventListener('click', e => {
-if (!document.querySelector('.celebrity-input').contains(e.target)) {
+const search = document.querySelector('.celebrity-search');
+if (search && !search.contains(e.target)) {
   const sugg = document.getElementById('celebritySuggestions');
   sugg.innerHTML = '';
   sugg.style.display = 'none';
@@ -178,9 +179,8 @@ return `Illustration portrait of ${data.celebrity}, created in ${data.artStyle}`
   `${data.expression ? ", showing a " + data.expression + " expression" : ""}` +
   `${data.lighting ? ", with " + data.lighting : ""}` +
   `${data.clothing ? ", wearing " + data.clothing : ""}` +
-  `${data.outfit ? " (" + data.outfit + ")" : ""}` +
   `, set in ${data.theme}` +
-  `${data.mood ? ", conveying a " + data.mood + " mood" : ""}` +
+  `${data.background ? ", against a " + data.background + " background" : ""}` +
   `${data.features ? ", highlighting " + data.features : ""}.` +
   ` Rendered in the style of ${reference}, with ${tech}.`;
 }
@@ -209,14 +209,13 @@ return;
 const artStyle = getSelectedValue('styleGrid') || ART_STYLES[0];
 const theme = getSelectedValue('themeGrid') || THEMES[0];
 const lighting = document.getElementById('lightingSelect').value;
-const clothing = document.getElementById('clothingSelect').value;
-const expression = document.getElementById('expressionInput').value.trim();
-const outfit = document.getElementById('outfitInput').value.trim();
-const mood = document.getElementById('moodInput').value.trim();
-const features = document.getElementById('featuresInput').value.trim();
+const clothing = document.getElementById('outfitSelect').value;
+const expression = document.getElementById('expressionSelect').value;
+const background = document.getElementById('backgroundSelect').value;
+const features = document.getElementById('specialFeatures').value.trim();
 const prompts = generatePromptVariations({
 celebrity, artStyle, theme,
-lighting, clothing, expression, outfit, mood, features
+lighting, clothing, background, expression, features
 });
 // Show loading overlay
 const overlay = document.getElementById('loadingOverlay');
@@ -247,13 +246,22 @@ promptDiv.appendChild(copyBtn);
 pContainer.appendChild(promptDiv);
 });
 }
-document.getElementById('clearBtn').onclick = () => {
-document.getElementById('promptsContainer').innerHTML = '';
+const clearBtn = document.getElementById('clearBtn');
+if (clearBtn) {
+clearBtn.onclick = () => {
+  document.getElementById('promptsContainer').innerHTML = '';
 };
-document.getElementById('advancedToggle').onclick = () => {
-const adv = document.getElementById('advancedOptions');
-adv.classList.toggle('open');
+}
+const advToggle = document.getElementById('advancedToggle');
+if (advToggle) {
+advToggle.onclick = () => {
+  const adv = document.getElementById('advancedOptions');
+  if (adv) adv.classList.toggle('open');
 };
-document.getElementById('themeToggle').onclick = () => {
-document.body.classList.toggle('night');
+}
+const themeToggle = document.getElementById('themeToggle');
+if (themeToggle) {
+themeToggle.onclick = () => {
+  document.body.classList.toggle('night');
 };
+}
