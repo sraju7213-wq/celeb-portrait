@@ -260,8 +260,13 @@ advToggle.onclick = () => {
 };
 }
 const themeToggle = document.getElementById('themeToggle');
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+document.body.classList.toggle('dark-theme', prefersDark.matches);
+prefersDark.addEventListener('change', e => {
+  document.body.classList.toggle('dark-theme', e.matches);
+});
 if (themeToggle) {
-themeToggle.onclick = () => {
-  document.body.classList.toggle('night');
-};
+  themeToggle.onclick = () => {
+    document.body.classList.toggle('dark-theme');
+  };
 }
