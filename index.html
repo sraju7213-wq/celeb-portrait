@@ -30,6 +30,20 @@
                         <input type="text" id="celebrityInput" placeholder="Search celebrity name..." autocomplete="off">
                         <div class="celebrity-suggestions" id="celebritySuggestions"></div>
                     </div>
+                    <div class="filters">
+                        <select id="genderFilter">
+                            <option value="">All Genders</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <select id="industryFilter">
+                            <option value="">All Industries</option>
+                            <option value="hollywood">Hollywood</option>
+                            <option value="bollywood">Bollywood</option>
+                            <option value="hiphop">Hip-hop Artists</option>
+                            <option value="singers">Singers</option>
+                        </select>
+                    </div>
                     <div class="popular-celebrities">
                         <h3>Popular Choices:</h3>
                         <div class="celebrity-chips" id="celebrityChips"></div>
@@ -44,6 +58,14 @@
                 <div class="input-card">
                     <h2><i class="fas fa-magic"></i> Theme & Mood</h2>
                     <div class="theme-grid" id="themeGrid"></div>
+                </div>
+
+                <div class="input-card">
+                    <h2><i class="fas fa-user-edit"></i> Custom Details</h2>
+                    <input type="text" id="expressionInput" placeholder="Facial expression (e.g., happy, serious)">
+                    <input type="text" id="outfitInput" placeholder="Outfit and accessories">
+                    <input type="text" id="moodInput" placeholder="Mood or tone">
+                    <input type="text" id="featuresInput" placeholder="Specific features (e.g., long flowing hair)">
                 </div>
 
                 <div class="input-card advanced-options" id="advancedOptions">
