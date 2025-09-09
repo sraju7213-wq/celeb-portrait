@@ -262,6 +262,7 @@ advToggle.onclick = () => {
 const themeToggle = document.getElementById('themeToggle');
 if (themeToggle) {
 themeToggle.onclick = () => {
-  document.body.classList.toggle('night');
+  document.body.classList.toggle('dark-theme');
+  document.body.classList.toggle('light-theme');
 };
 }
