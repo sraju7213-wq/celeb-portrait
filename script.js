@@ -158,6 +158,65 @@ container.setAttribute('data-selected', value);
 // ===============
 // Prompt Generator
 // ===============
+
+// Gemini API integration
+const GEMINI_API_KEY = "AIzaSyDUYUjoLLILnyNZjO9aLaPQ7n7yO9lhP2U";
+const MIN_PROMPT_CHARS = 1000;
+const MAX_PROMPT_CHARS = 1300;
+
+function ensurePromptLength(text) {
+  if (!text) return text;
+  let result = text.trim();
+  if (result.length > MAX_PROMPT_CHARS) {
+    result = result.slice(0, MAX_PROMPT_CHARS);
+  }
+  if (result.length < MIN_PROMPT_CHARS) {
+    const filler =
+      " Elaborate with imaginative, professional detail, describing atmosphere, textures, colors, emotions, and nuanced scene elements.";
+    while (result.length < MIN_PROMPT_CHARS) {
+      result += filler;
+    }
+    if (result.length > MAX_PROMPT_CHARS) {
+      result = result.slice(0, MAX_PROMPT_CHARS);
+    }
+  }
+  return result;
+}
+
+async function enhancePromptWithAI(prompt) {
+  try {
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-goog-api-key": GEMINI_API_KEY,
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: `Act as a creative professional with over 10 years of experience. Rewrite the following art prompt into a single vivid description between ${MIN_PROMPT_CHARS} and ${MAX_PROMPT_CHARS} characters:\n${prompt}`,
+                },
+              ],
+            },
+          ],
+          generationConfig: { maxOutputTokens: 1024 },
+        }),
+      }
+    );
+    const data = await response.json();
+    const refined =
+      data.candidates?.[0]?.content?.parts?.map((p) => p.text).join(" ").trim() ||
+      null;
+    return ensurePromptLength(refined);
+  } catch (err) {
+    console.error("Gemini API error", err);
+    return null;
+  }
+}
 function getSelectedValue(containerId) {
 const grid = document.getElementById(containerId);
 if (!grid) return '';
@@ -200,7 +259,7 @@ return variations;
 // =============
 // Event Handlers
 // =============
-document.getElementById('generateBtn').onclick = function() {
+document.getElementById('generateBtn').onclick = async function() {
 const celebrity = document.getElementById('celebrityInput').value.trim();
 if (!celebrity) {
 alert('Please enter or select a celebrity.');
@@ -213,17 +272,21 @@ const clothing = document.getElementById('outfitSelect').value;
 const expression = document.getElementById('expressionSelect').value;
 const background = document.getElementById('backgroundSelect').value;
 const features = document.getElementById('specialFeatures').value.trim();
-const prompts = generatePromptVariations({
+const basePrompts = generatePromptVariations({
 celebrity, artStyle, theme,
 lighting, clothing, background, expression, features
 });
 // Show loading overlay
 const overlay = document.getElementById('loadingOverlay');
 overlay.classList.add('active');
-setTimeout(() => {
+const prompts = await Promise.all(
+  basePrompts.map(async (p) => {
+    const aiPrompt = await enhancePromptWithAI(p);
+    return ensurePromptLength(aiPrompt || p);
+  })
+);
 overlay.classList.remove('active');
 displayPrompts(prompts);
-}, 500);
 };
 function displayPrompts(prompts) {
 const pContainer = document.getElementById('promptsContainer');
