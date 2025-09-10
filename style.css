@@ -1,15 +1,22 @@
-/* Enhanced Celebrity Portrait Prompts App Styles */
+/* Modern Dark Theme Styles */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+:root {
+    --accent: #00b4d8;
+    --bg: #121212;
+    --surface: #1e1e1e;
+    --text: #e0e0e0;
+    --text-muted: #b0b0b0;
+}
+
 body {
-    font-family: 'Poppins', Arial, sans-serif;
-    margin: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: #222;
+    font-family: 'Inter', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
     min-height: 100vh;
 }
 
@@ -19,76 +26,59 @@ body {
     padding: 20px;
 }
 
-/* Enhanced Header */
-.app-header {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 50%, #ff9ff3 100%);
-    border-radius: 16px;
-    text-align: center;
-    padding: 2.5rem 2rem 2rem 2rem;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.app-header::before {
-    content: '';
-    position: absolute;
+/* Compact Sticky Header */
+.top-bar {
+    position: sticky;
     top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="40%"><stop offset="0%" stop-color="%23FFF" stop-opacity="0.1"/><stop offset="100%" stop-color="%23FFF" stop-opacity="0"/></radialGradient></defs><rect width="100" height="20" fill="url(%23a)"/></svg>') repeat-x;
-    opacity: 0.3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: #1a1a1a;
+    z-index: 100;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
-.header-content {
-    position: relative;
-    z-index: 1;
-}
-
-.header-content h1 {
-    margin: 0 0 0.5rem 0;
-    font-size: 3rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.header-content p {
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
-    font-weight: 400;
+.logo {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .header-controls {
-    position: absolute;
-    top: 20px;
-    right: 30px;
     display: flex;
-    gap: 10px;
+    gap: 1rem;
+    align-items: center;
 }
 
 .header-controls button {
-    background: rgba(255,255,255,0.2);
-    color: #fff;
+    background: none;
     border: none;
-    font-size: 1.3rem;
-    padding: 12px 15px;
-    border-radius: 50%;
+    color: var(--text);
     cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+}
+
+.header-controls button.icon-btn {
+    padding: 6px;
 }
 
 .header-controls button:hover {
-    background: rgba(255,255,255,0.3);
+    color: var(--accent);
+    background: rgba(255,255,255,0.05);
     transform: translateY(-2px);
 }
 
-/* Enhanced Main Layout */
+/* Main Layout */
 .app-main {
     display: flex;
     gap: 2rem;
@@ -134,7 +124,7 @@ body {
 .input-card h2 i {
     margin-right: 10px;
     font-size: 1.3rem;
-    color: #ff6b6b;
+    color: var(--accent);
 }
 
 /* Filters Section */
@@ -167,7 +157,7 @@ body {
 }
 
 .filter-group select:focus {
-    border-color: #ff6b6b;
+    border-color: var(--accent);
     outline: none;
 }
 
@@ -188,7 +178,7 @@ body {
 }
 
 .celebrity-search input:focus {
-    border-color: #ff6b6b;
+    border-color: var(--accent);
     outline: none;
     box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
 }
@@ -266,7 +256,7 @@ body {
 }
 
 .celebrity-card.selected {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #ee5a24 100%);
     transform: scale(1.05);
 }
 
@@ -335,7 +325,7 @@ body {
 }
 
 .custom-row select:focus, .custom-row textarea:focus {
-    border-color: #ff6b6b;
+    border-color: var(--accent);
     outline: none;
     box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.1);
 }
@@ -369,7 +359,7 @@ body {
 }
 
 .generate-btn {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #ee5a24 100%);
 }
 
 .save-preset-btn {
@@ -421,8 +411,8 @@ body {
 }
 
 .output-controls button:hover {
-    border-color: #ff6b6b;
-    color: #ff6b6b;
+    border-color: var(--accent);
+    color: var(--accent);
 }
 
 /* Enhanced Prompt Display */
@@ -437,7 +427,7 @@ body {
     margin-bottom: 20px;
     position: relative;
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    border-left: 4px solid #ff6b6b;
+    border-left: 4px solid var(--accent);
 }
 
 .prompt-header {
@@ -451,7 +441,7 @@ body {
 
 .prompt-title {
     font-weight: 600;
-    color: #ff6b6b;
+    color: var(--accent);
     font-size: 0.9rem;
 }
 
@@ -462,7 +452,7 @@ body {
 
 .action-btn {
     background: rgba(255, 107, 107, 0.2);
-    color: #ff6b6b;
+    color: var(--accent);
     border: 1px solid rgba(255, 107, 107, 0.3);
     border-radius: 6px;
     padding: 4px 10px;
@@ -484,7 +474,7 @@ body {
 
 .welcome-message i {
     font-size: 4rem;
-    color: #ff6b6b;
+    color: var(--accent);
     margin-bottom: 20px;
 }
 
@@ -551,7 +541,7 @@ body {
 }
 
 .loading-content i {
-    color: #ff6b6b;
+    color: var(--accent);
     font-size: 3rem;
     margin-bottom: 20px;
 }
@@ -576,7 +566,7 @@ body {
     display: block;
     width: 50%;
     height: 100%;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    background: linear-gradient(135deg, var(--accent) 0%, #ee5a24 100%);
     animation: loading-slide 1.5s ease-in-out infinite;
 }
 
@@ -728,36 +718,140 @@ body {
         margin-top: 15px;
     }
 
-    .modal-content {
+.modal-content {
         width: 95%;
         margin: 10px;
     }
 }
 
-/* Dark Theme */
-body.dark-theme {
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+/* Dark Theme Overrides */
+.input-card,
+.output-section {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid #2a2a2a;
 }
 
-body.dark-theme .input-card,
-body.dark-theme .output-section {
-    background: rgba(52, 73, 94, 0.95);
-    color: #ecf0f1;
+.input-card h2 {
+    color: var(--text);
 }
 
-body.dark-theme .filter-group select,
-body.dark-theme .celebrity-search input,
-body.dark-theme .custom-row select,
-body.dark-theme .custom-row textarea {
-    background: #34495e;
-    color: #ecf0f1;
-    border-color: #4a6741;
+.input-card h2 i {
+    color: var(--accent);
 }
 
-body.dark-theme .welcome-message {
-    color: #bdc3c7;
+.filter-group select,
+.celebrity-search input,
+.custom-row select,
+.custom-row textarea {
+    background: #262626;
+    border: 1px solid #333;
+    color: var(--text);
 }
 
-body.dark-theme .welcome-message h3 {
-    color: #ecf0f1;
+.filter-group label {
+    color: var(--text);
 }
+
+.filter-group select:focus,
+.celebrity-search input:focus,
+.custom-row select:focus,
+.custom-row textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,180,216,0.2);
+    outline: none;
+}
+
+.generate-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.generate-btn:hover {
+    background: #00c2e4;
+    transform: translateY(-2px);
+    box-shadow: 0 0 8px rgba(0,180,216,0.4);
+}
+
+.save-preset-btn {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.save-preset-btn:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 8px rgba(0,180,216,0.4);
+}
+
+.output-controls button {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.output-controls button:hover {
+    background: var(--accent);
+    color: #fff;
+}
+
+.output-header h2 {
+    color: var(--text);
+}
+
+.code-prompt {
+    background: #1a1a1a;
+    border-left: 4px solid var(--accent);
+    color: var(--text);
+    font-family: 'Fira Code', 'Consolas', monospace;
+    padding: 1rem 3rem 1rem 1rem;
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.copy-btn {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s ease;
+}
+
+.copy-btn:hover {
+    background: #00c2e4;
+}
+
+@media (max-width: 768px) {
+    .app-main {
+        flex-direction: column;
+    }
+
+    .input-section,
+    .output-section {
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .top-bar {
+        flex-wrap: wrap;
+    }
+}
+
