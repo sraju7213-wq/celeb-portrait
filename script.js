@@ -161,6 +161,27 @@ container.setAttribute('data-selected', value);
 
 // Gemini API integration
 const GEMINI_API_KEY = "AIzaSyDUYUjoLLILnyNZjO9aLaPQ7n7yO9lhP2U";
+const MIN_PROMPT_CHARS = 1000;
+const MAX_PROMPT_CHARS = 1300;
+
+function ensurePromptLength(text) {
+  if (!text) return text;
+  let result = text.trim();
+  if (result.length > MAX_PROMPT_CHARS) {
+    result = result.slice(0, MAX_PROMPT_CHARS);
+  }
+  if (result.length < MIN_PROMPT_CHARS) {
+    const filler =
+      " Elaborate with imaginative, professional detail, describing atmosphere, textures, colors, emotions, and nuanced scene elements.";
+    while (result.length < MIN_PROMPT_CHARS) {
+      result += filler;
+    }
+    if (result.length > MAX_PROMPT_CHARS) {
+      result = result.slice(0, MAX_PROMPT_CHARS);
+    }
+  }
+  return result;
+}
 
 async function enhancePromptWithAI(prompt) {
   try {
@@ -177,19 +198,20 @@ async function enhancePromptWithAI(prompt) {
             {
               parts: [
                 {
-                  text: `Refine this art prompt for higher quality output:\n${prompt}`,
+                  text: `Act as a creative professional with over 10 years of experience. Rewrite the following art prompt into a single vivid description between ${MIN_PROMPT_CHARS} and ${MAX_PROMPT_CHARS} characters:\n${prompt}`,
                 },
               ],
             },
           ],
+          generationConfig: { maxOutputTokens: 1024 },
         }),
       }
     );
     const data = await response.json();
-    return (
+    const refined =
       data.candidates?.[0]?.content?.parts?.map((p) => p.text).join(" ").trim() ||
-      null
-    );
+      null;
+    return ensurePromptLength(refined);
   } catch (err) {
     console.error("Gemini API error", err);
     return null;
@@ -260,7 +282,7 @@ overlay.classList.add('active');
 const prompts = await Promise.all(
   basePrompts.map(async (p) => {
     const aiPrompt = await enhancePromptWithAI(p);
-    return aiPrompt || p;
+    return ensurePromptLength(aiPrompt || p);
   })
 );
 overlay.classList.remove('active');
