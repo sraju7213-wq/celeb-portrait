@@ -142,6 +142,36 @@ const TECH_TERMS = [
   "volumetric lighting", "global illumination", "tilt-shift lens", "octane render", "unreal engine", "hdr lighting"
 ];
 
+const ATMOSPHERES = [
+  "A tranquil, softly lit studio, with delicate shadows and a gentle gradient background.",
+  "A cozy, warmly illuminated room filled with soft ambient light.",
+  "An open-air setting bathed in natural sunlight and subtle haze."
+];
+
+const TEXTURES = [
+  "Smooth skin with subtle imperfections and crisp fabric details.",
+  "Rough natural materials contrasted with polished surfaces.",
+  "Velvety fabrics and glossy highlights creating tactile richness."
+];
+
+const COLORS = [
+  "A muted palette with accents of cool blues and warm ochres.",
+  "Vibrant splashes of neon against deep charcoal tones.",
+  "Earthy browns paired with soft pastel highlights."
+];
+
+const EMOTIONS = [
+  "A quiet, introspective expression with a thoughtful gaze.",
+  "A bright, confident smile radiating warmth.",
+  "A wistful look hinting at distant memories."
+];
+
+const SCENES = [
+  "Subtle reflections and a softly blurred background draw focus to the subject.",
+  "Minimal props and a clean backdrop emphasize the portrait.",
+  "A hint of bustling city lights twinkling out of focus behind."
+];
+
 // ================
 // UI Initialization
 // ================
@@ -232,24 +262,14 @@ container.setAttribute('data-selected', value);
 
 // Gemini API integration
 const GEMINI_API_KEY = "AIzaSyDUYUjoLLILnyNZjO9aLaPQ7n7yO9lhP2U";
-const MIN_PROMPT_CHARS = 1000;
-const MAX_PROMPT_CHARS = 1300;
+const MIN_PROMPT_CHARS = 300;
+const MAX_PROMPT_CHARS = 800;
 
 function ensurePromptLength(text) {
   if (!text) return text;
   let result = text.trim();
   if (result.length > MAX_PROMPT_CHARS) {
     result = result.slice(0, MAX_PROMPT_CHARS);
-  }
-  if (result.length < MIN_PROMPT_CHARS) {
-    const filler =
-      " Elaborate with imaginative, professional detail, describing atmosphere, textures, colors, emotions, and nuanced scene elements.";
-    while (result.length < MIN_PROMPT_CHARS) {
-      result += filler;
-    }
-    if (result.length > MAX_PROMPT_CHARS) {
-      result = result.slice(0, MAX_PROMPT_CHARS);
-    }
   }
   return result;
 }
@@ -297,22 +317,30 @@ function getRandom(items) {
 return items[Math.floor(Math.random() * items.length)];
 }
 function buildPrompt(data) {
-// Use structure: "Illustration portrait of [CELEB], created in [STYLE], with [LIGHTING], wearing [CLOTHING], set in [THEME], emphasizing [MOOD]. Rendered in the style of [REFERENCE], with [TECH TERMS]."
-const reference = data.artRef
-? data.artRef
-: getRandom(ART_REFERENCES);
-const tech = data.techTerms
-? data.techTerms
-: [getRandom(TECH_TERMS), getRandom(TECH_TERMS)].filter((v,i,a)=>a.indexOf(v)===i).join(", ");
+  const reference = data.artRef
+    ? data.artRef
+    : getRandom(ART_REFERENCES);
+  const tech = data.techTerms
+    ? data.techTerms
+    : [getRandom(TECH_TERMS), getRandom(TECH_TERMS)].filter((v, i, a) => a.indexOf(v) === i).join(", ");
 
-return `Illustration portrait of ${data.celebrity}, created in ${data.artStyle}` +
-  `${data.expression ? ", showing a " + data.expression + " expression" : ""}` +
-  `${data.lighting ? ", with " + data.lighting : ""}` +
-  `${data.clothing ? ", wearing " + data.clothing : ""}` +
-  `, set in ${data.theme}` +
-  `${data.background ? ", against a " + data.background + " background" : ""}` +
-  `${data.features ? ", highlighting " + data.features : ""}.` +
-  ` Rendered in the style of ${reference}, with ${tech}.`;
+  const atmosphere = data.atmosphere || getRandom(ATMOSPHERES);
+  const texture = data.textures || getRandom(TEXTURES);
+  const color = data.colors || getRandom(COLORS);
+  const emotion = data.emotions || getRandom(EMOTIONS);
+  const scene = data.scene || getRandom(SCENES);
+
+  const featureList = [];
+  if (data.lighting) featureList.push(data.lighting);
+  if (data.clothing) featureList.push(data.clothing);
+  if (data.background) featureList.push(`${data.background} background`);
+  if (data.expression) featureList.push(`showing a ${data.expression} expression`);
+  if (data.features) featureList.push(data.features);
+  const featurePart = featureList.length ? ` ${featureList.join(", ")}.` : "";
+
+  return `Portrait of ${data.celebrity} rendered in ${data.artStyle}, styled as a ${data.theme}.` +
+    `${featurePart} ${atmosphere} ${texture} ${color} ${emotion} ${scene} ` +
+    `Rendered in the style of ${reference}, with ${tech}.`;
 }
 function generatePromptVariations(inputs) {
 const variations = [];
