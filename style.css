@@ -708,17 +708,50 @@ body {
 }
 
 @media (max-width: 480px) {
-    .input-card, .output-section {
+    .app-container {
+        padding: 10px;
+    }
+
+    .input-card,
+    .output-section {
         padding: 20px 15px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
     }
 
     .header-controls {
         position: static;
-        justify-content: center;
-        margin-top: 15px;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 8px;
+        margin-top: 0;
+        width: 100%;
     }
 
-.modal-content {
+    .header-controls button {
+        width: 100%;
+    }
+
+    .output-controls {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .output-controls button {
+        width: 100%;
+    }
+
+    .celebrity-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+
+    .modal-content {
         width: 95%;
         margin: 10px;
     }
@@ -852,6 +885,13 @@ body {
 
     .top-bar {
         flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header-controls {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
     }
 }
 
