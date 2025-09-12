@@ -18,6 +18,14 @@ body {
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
 }
 
 .app-container {
@@ -81,24 +89,43 @@ body {
 /* Main Layout */
 .app-main {
     display: flex;
+    flex-direction: column;
     gap: 2rem;
     align-items: flex-start;
 }
 
 .input-section {
     flex: 1;
-    min-width: 400px;
+    min-width: 0;
+    width: 100%;
     max-width: 500px;
 }
 
 .output-section {
     flex: 2;
-    min-width: 600px;
+    min-width: 0;
+    width: 100%;
     background: #fff;
     border-radius: 16px;
     padding: 30px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
+}
+
+@media (min-width: 768px) {
+    .app-main {
+        flex-direction: row;
+    }
+
+    .input-section {
+        max-width: 400px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .app-main {
+        gap: 2.5rem;
+    }
 }
 
 /* Enhanced Input Cards */
@@ -669,16 +696,6 @@ body {
 }
 
 /* Responsive Design */
-@media (max-width: 1200px) {
-    .app-main {
-        flex-direction: column;
-    }
-
-    .input-section, .output-section {
-        min-width: unset;
-        max-width: unset;
-    }
-}
 
 @media (max-width: 768px) {
     .app-container {
@@ -873,16 +890,6 @@ body {
 }
 
 @media (max-width: 768px) {
-    .app-main {
-        flex-direction: column;
-    }
-
-    .input-section,
-    .output-section {
-        max-width: 100%;
-        min-width: 0;
-    }
-
     .top-bar {
         flex-wrap: wrap;
         justify-content: center;
